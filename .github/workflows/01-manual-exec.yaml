@@ -32,11 +32,11 @@ jobs:
 
       # instalação da dependências
       - name: Instalando dependências
-        run: run yarn
+        run: yarn
 
       # Instalação dos Browsers do Playright
       - name: Instalando Browsers do Playright
-        run: yarn playright install
+        run: yarn playwright install
 
       # executar os testes e2e
       - name: Executando os testes e2e
