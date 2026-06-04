@@ -1,8 +1,10 @@
 // ceclarando pipeline do Jenkins
 pipeline {
     // define onde a pipeline será executada
-    // agent any permite executar em qualquer agente disponível no Jenkins
-    agent any
+    // utiliza o agent self-hosted configurado no Jenkins com o rótulo pgats-agent-local
+    agent {
+        label 'pgats-agent-local'
+    }
 
     // ferramentas gerenciadas pelo Jenkins
     // o nome NodeJS 24 precisa ser igual ao configurado em Manage Jenkins > Tools
