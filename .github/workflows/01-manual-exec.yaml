@@ -9,6 +9,14 @@ name: "Execução Manual"
 on:
   workflow_dispatch:
 
+# Permissões necessárias para a extensão test-reporter gravar e ler o relatório dos testes executados
+
+permissions:
+  # Permite a action ler o repositório e publicar checks com o relatório dos testes
+  contents: read
+  # Permite a action criar, atualizar e publicar o relatório de testes
+  checks: write
+
 # tarefas dentro da pipeline = jobs
 jobs:
   #nome do job
@@ -41,3 +49,25 @@ jobs:
       # executar os testes e2e
       - name: Executando os testes e2e
         run: yarn run e2e
+
+      # publicação do relatório dos testes executados no GitHub Actions
+      # utilizando o arquivo results.xml gerado pelo Playwright
+      - name: Publicando relatório dos testes
+        uses: dorny/test-reporter@v3
+        if: always()
+        with:
+          name: Playwright E2E
+          path: results.xml
+          reporter:
+            java-junit
+
+      # salvar o relatório HTML gerado pelo Playwright
+      # permite baixar o relatório completo depois que a pipeline terminar
+      # Define tempo de retenção do relatório
+      - name: Salvando o relatório HTML do Playwright
+        uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
