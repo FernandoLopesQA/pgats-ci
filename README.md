@@ -45,40 +45,119 @@
 
 ## Implementações de Integração Contínua
 
-Esta seção registra as implementações realizadas para os exercícios de Integração Contínua, mantendo o conteúdo original do projeto sem alterações.
-
 ### Exercício 1 - Pipeline no Jenkins
 
-Foi implementada uma pipeline de CI no Jenkins utilizando uma Multibranch Pipeline.
+Arquivo criado:
 
-A configuração da pipeline foi criada no arquivo `.jenkins/Jenkinsfile`, permitindo que o Jenkins identifique branches do repositório que contenham esse arquivo e execute o fluxo automaticamente.
+```text
+.jenkins/Jenkinsfile
+```
 
-Etapas configuradas na pipeline Jenkins:
+Configurações no Jenkins:
+
+```text
+Tipo do job: Multibranch Pipeline
+Build Configuration > Script Path: .jenkins/Jenkinsfile
+NodeJS Tool: NodeJS 24
+Global npm packages: yarn
+```
+
+Etapas executadas:
 
 1. Checkout do código-fonte.
-2. Configuração do ambiente com Node.js 24.
-3. Validação das versões de Node.js, npm e Yarn.
-4. Instalação das dependências com `yarn install --frozen-lockfile`.
-5. Execução dos testes unitários com `yarn run test`.
-6. Instalação dos navegadores do Playwright com `yarn playwright install`.
-7. Execução dos testes end-to-end com `yarn run e2e`.
-8. Publicação dos resultados de teste no Jenkins a partir do arquivo `results.xml`.
-9. Arquivamento dos relatórios `playwright-report` e `reports/coverage` como artefatos da build.
+2. Validação do ambiente.
+3. Instalação das dependências.
+4. Execução dos testes unitários.
+5. Instalação dos navegadores do Playwright.
+6. Execução dos testes E2E.
+7. Publicação dos resultados de teste.
+8. Arquivamento dos relatórios como artefatos.
 
-Com isso, o projeto passou a ter uma pipeline equivalente em outra ferramenta de Integração Contínua, além do GitHub Actions.
+Comandos usados na pipeline:
+
+```shell
+node --version
+npm --version
+yarn --version
+yarn install --frozen-lockfile
+yarn run test
+yarn playwright install
+yarn run e2e
+```
+
+Relatórios e artefatos:
+
+```text
+results.xml
+playwright-report/**
+reports/coverage/**
+```
 
 ### Exercício 2 - Actions do GitHub Marketplace
 
-Foram adicionadas actions do GitHub Marketplace ao workflow `.github/workflows/01-manual-exec.yaml` para melhorar a visibilidade dos resultados da pipeline.
+Arquivo atualizado:
 
-Actions implementadas:
+```text
+.github/workflows/01-manual-exec.yaml
+```
 
-1. `dorny/test-reporter@v3`
+Actions adicionadas:
 
-   Utilizada para ler o arquivo `results.xml`, gerado pelo Playwright, e publicar um resumo visual dos testes no GitHub Actions.
+```yaml
+uses: dorny/test-reporter@v3
+```
 
-2. `actions/upload-artifact@v7.0.1`
+```yaml
+uses: actions/upload-artifact@v7.0.1
+```
 
-   Utilizada para salvar o relatório HTML do Playwright como artefato da execução, permitindo baixar e consultar o relatório completo após a finalização da pipeline.
+Actions atualizadas:
 
-Também foram atualizadas as actions oficiais `actions/checkout` e `actions/setup-node` para versões compatíveis com runtime Node.js 24, removendo o aviso de depreciação relacionado ao Node.js 20.
+```yaml
+uses: actions/checkout@v5
+uses: actions/setup-node@v5
+```
+
+Permissões configuradas:
+
+```yaml
+permissions:
+  contents: read
+  checks: write
+```
+
+Relatórios e artefatos:
+
+```text
+results.xml
+playwright-report/
+```
+
+### Exercício 3 - Self-hosted agent no Jenkins
+
+Configuração do agent:
+
+```text
+Nome do nó: pgats-agent-local
+Tipo: Permanent Agent
+Número de executores: 1
+Diretório raiz remoto: /Users/fernando.lopes/jenkins-agent
+Rótulo: pgats-agent-local
+Uso: Deixar o processamento para atividades vinculadas
+Método de lançamento: Lançar um agente conectando-o ao controlador
+```
+
+Trecho atualizado no `.jenkins/Jenkinsfile`:
+
+```groovy
+agent {
+    label 'pgats-agent-local'
+}
+```
+
+Comandos para conexão do agent:
+
+```shell
+curl -sO http://localhost:8080/jnlpJars/agent.jar
+java -jar agent.jar -url http://localhost:8080/ -secret <secret> -name "pgats-agent-local" -webSocket -workDir "/Users/fernando.lopes/jenkins-agent"
+```
