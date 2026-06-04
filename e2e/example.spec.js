@@ -23,7 +23,7 @@ test.describe(`user rides`, async () => {
     await page.getByLabel('Height for person').fill('139');
     await page.getByRole('button', { name: 'Next' }).click();
     await expect(
-      page.getByText('Person 1 is too short for this ride'),
+      page.getByText('Person 2 is too short for this ride'),
     ).toBeVisible();
   });
 
