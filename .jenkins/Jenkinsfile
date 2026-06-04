@@ -1,0 +1,71 @@
+// ceclarando pipeline do Jenkins
+pipeline {
+    // define onde a pipeline será executada
+    // agent any permite executar em qualquer agente disponível no Jenkins
+    agent any
+
+    // ferramentas gerenciadas pelo Jenkins
+    // o nome NodeJS 24 precisa ser igual ao configurado em Manage Jenkins > Tools
+    tools {
+        nodejs 'NodeJS 24'
+    }
+
+    stages {
+        // baixa o código-fonte do repositório e da branch detectada pelo Multibranch Pipeline
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        // valida as versões das ferramentas usadas na execução
+        stage('Validar ambiente') {
+            steps {
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'yarn --version'
+            }
+        }
+
+        // instala as dependências do projeto usando o arquivo yarn.lock
+        stage('Instalar dependências') {
+            steps {
+                sh 'yarn install --frozen-lockfile'
+            }
+        }
+
+        // executa os testes unitários com Jest
+        stage('Testes unitários') {
+            steps {
+                sh 'yarn run test'
+            }
+        }
+
+        // instala os navegadores necessários para execução dos testes Playwright
+        stage('Instalar browsers do Playwright') {
+            steps {
+                sh 'yarn playwright install'
+            }
+        }
+
+        // executa os testes end-to-end configurados na pasta e2e
+        stage('Testes E2E') {
+            steps {
+                sh 'yarn run e2e'
+            }
+        }
+    }
+
+    post {
+        always {
+            // publica o arquivo results.xml como relatório de testes no Jenkins
+            junit allowEmptyResults: true, testResults: 'results.xml'
+
+            // arquiva o relatório HTML gerado pelo Playwright
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+
+            // arquiva o relatório de cobertura gerado pelo Jest
+            archiveArtifacts artifacts: 'reports/coverage/**', allowEmptyArchive: true
+        }
+    }
+}
