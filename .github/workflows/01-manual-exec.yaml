@@ -58,4 +58,16 @@ jobs:
         with:
           name: Playwright E2E
           path: results.xml
-          reporter: java-junit
+          reporter:
+            java-junit
+
+      # salvar o relatório HTML gerado pelo Playwright
+      # permite baixar o relatório completo depois que a pipeline terminar
+      # Define tempo de retenção do relatório
+      - name: Salvando o relatório HTML do Playwright
+        uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
