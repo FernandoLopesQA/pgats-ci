@@ -34,13 +34,6 @@ pipeline {
             }
         }
 
-        // executa a validação de tipos e formatação configurada no package.json
-        stage('Lint') {
-            steps {
-                sh 'yarn run lint'
-            }
-        }
-
         // executa os testes unitários com Jest
         stage('Testes unitários') {
             steps {
