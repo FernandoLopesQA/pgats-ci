@@ -1,4 +1,4 @@
-// ceclarando pipeline do Jenkins
+// Declarando pipeline do Jenkins
 pipeline {
     // define onde a pipeline será executada
     // utiliza o agent self-hosted configurado no Jenkins com o rótulo pgats-agent-local
