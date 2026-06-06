@@ -72,29 +72,8 @@ jobs:
       - name: Instalando dependências
         run: yarn
 
-      - name: Rodando testes unitérios
+      - name: Rodando testes unitários
         run: yarn run test
-
-      # publicação do relatório dos testes executados no GitHub Actions
-      # utilizando o arquivo results.xml gerado pelo Playwright
-      - name: Publicando relatório dos testes
-        uses: dorny/test-reporter@v3
-        if: always()
-        with:
-          name: Playwright E2E
-          path: results.xml
-          reporter: java-junit
-
-      # salvar o relatório HTML gerado pelo Playwright
-      # permite baixar o relatório completo depois que a pipeline terminar
-      # Define tempo de retenção do relatório
-      - name: Salvando o relatório HTML do Playwright
-        uses: actions/upload-artifact@v7.0.1
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
 
   #nome do job
   e2e-tests:
