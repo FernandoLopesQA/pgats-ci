@@ -12,7 +12,10 @@ on:
   schedule:
     # cronograma de execução
     # 1 - minuto, 2 - hora, 3 - dia do mês, 4 - mês, 5 - dia da semana
-    - cron: '30 11 6 6 *' # -> Runs at 08:30 BRT on June 6
+    - cron: '*/30 * * * *' # -> Runs every 30 minutes
+
+    # roda toda sexta-feira a meia-noite
+    - cron: '0 0 * * 5' # -> Runs every friday at midnight
 
 # Permissões necessárias para a extensão test-reporter gravar e ler o relatório dos testes executados
 
