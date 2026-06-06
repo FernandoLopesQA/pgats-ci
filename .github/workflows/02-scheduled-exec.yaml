@@ -14,6 +14,10 @@ on:
     # 1 - minuto, 2 - hora, 3 - dia do mês, 4 - mês, 5 - dia da semana
     - cron: '0 0 * * 5' # -> Runs every friday at midnight
 
+  push:
+    branches:
+      - master
+
 # Permissões necessárias para a extensão test-reporter gravar e ler o relatório dos testes executados
 
 permissions:
@@ -37,7 +41,7 @@ jobs:
       # instalação do node
       - uses: actions/setup-node@v5
         with:
-          node-version: 24.x
+          node-version: latest
 
       # instalação do yarn
       - name: Instalando Yarn
@@ -72,6 +76,6 @@ jobs:
         uses: actions/upload-artifact@v7.0.1
         if: always()
         with:
-          name: playwright-report
+          name: Relatório de Testes E2E
           path: playwright-report/
           retention-days: 7

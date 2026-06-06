@@ -10,6 +10,9 @@ name: 'N1 - Execução Manual'
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
 
 # Permissões necessárias para a extensão test-reporter gravar e ler o relatório dos testes executados
 
@@ -34,7 +37,7 @@ jobs:
       # instalação do node
       - uses: actions/setup-node@v5
         with:
-          node-version: 24.x
+          node-version: latest
 
       # instalação do yarn
       - name: Instalando Yarn
@@ -69,6 +72,6 @@ jobs:
         uses: actions/upload-artifact@v7.0.1
         if: always()
         with:
-          name: playwright-report
+          name: Relatório de Testes E2E
           path: playwright-report/
           retention-days: 7
