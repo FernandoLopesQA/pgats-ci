@@ -29,6 +29,9 @@ jobs:
     # maquina onde o job vai rodar
     runs-on: ubuntu-latest
 
+    # configura para rodar após concluir outra pipe com sucesso
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     # passos do job
     steps:
       # clone do projeto
