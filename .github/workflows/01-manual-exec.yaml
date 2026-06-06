@@ -1,7 +1,7 @@
 # CI de Nível 01 - Disparo Manual através de clique
 
 # nome da pipeline
-name: "Execução Manual"
+name: 'Execução Manual'
 
 # gatilho / triggers - regras de disparo
 # gatilho manual = workflow_dispatch
@@ -60,8 +60,7 @@ jobs:
         with:
           name: Playwright E2E
           path: results.xml
-          reporter:
-            java-junit
+          reporter: java-junit
 
       # salvar o relatório HTML gerado pelo Playwright
       # permite baixar o relatório completo depois que a pipeline terminar

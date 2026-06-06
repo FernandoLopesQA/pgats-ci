@@ -1,7 +1,7 @@
 # CI de Nível 02 - Disparo agendado através de schedule
 
 # nome da pipeline
-name: "Scheduled Execution"
+name: 'Scheduled Execution'
 
 # gatilho / triggers - regras de disparo
 # gatilho manual = workflow_dispatch
@@ -63,8 +63,7 @@ jobs:
         with:
           name: Playwright E2E
           path: results.xml
-          reporter:
-            java-junit
+          reporter: java-junit
 
       # salvar o relatório HTML gerado pelo Playwright
       # permite baixar o relatório completo depois que a pipeline terminar

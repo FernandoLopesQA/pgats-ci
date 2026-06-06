@@ -1,7 +1,7 @@
 # CI de Nível 03 - Disparo após conclusão de outra pipeline
 
 # nome da pipeline
-name: "Execução por deploy"
+name: 'Execução por deploy'
 
 # gatilho / triggers - regras de disparo
 # gatilho manual = workflow_dispatch
@@ -66,8 +66,7 @@ jobs:
         with:
           name: Playwright E2E
           path: results.xml
-          reporter:
-            java-junit
+          reporter: java-junit
 
       # salvar o relatório HTML gerado pelo Playwright
       # permite baixar o relatório completo depois que a pipeline terminar
