@@ -75,6 +75,34 @@ jobs:
       - name: Rodando testes unitários
         run: yarn run test
 
+  mutacao:
+    runs-on: ubuntu-latest
+    needs: [unidade]
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: latest
+
+      - name: Instalando Yarn
+        run: npm install -g yarn
+
+      - name: Instalando dependências
+        run: yarn
+
+      - name: Rodando testes de mutação
+        run: yarn run test:mutation
+
+      - name: Salvando relatório HTML do Stryker
+        uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: mutation-report
+          path: reports/mutation/html/
+          retention-days: 7
+
   #nome do job
   e2e-tests:
     # maquina onde o job vai rodar

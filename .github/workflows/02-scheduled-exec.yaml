@@ -1,7 +1,7 @@
 # CI de Nível 02 - Disparo agendado através de schedule
 
 # nome da pipeline
-name: 'Scheduled Execution'
+name: 'N2 - Execução agendada'
 
 # gatilho / triggers - regras de disparo
 # gatilho manual = workflow_dispatch
